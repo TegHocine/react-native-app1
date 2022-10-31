@@ -18,24 +18,34 @@ const Overview = ({ route, navigation }) => {
     })
   }, [catId, navigation])
 
+  const handleNavigate = (mealId) => {
+    navigation.navigate('MealsDetail', { mealId })
+  }
+
   return (
     <View>
       <FlatList
         data={meals}
         keyExtractor={(item) => item.id}
-        renderItem={(item) => <MealsItem {...item} />}
+        renderItem={(item) => (
+          <MealsItem
+            {...item}
+            navigate={handleNavigate}
+          />
+        )}
       />
     </View>
   )
 }
 
-const MealsItem = ({ item }) => {
-  const { title, imageUrl, affordability, complexity, duration } = item
+const MealsItem = ({ item, navigate }) => {
+  const { title, imageUrl, affordability, complexity, duration, id } = item
 
   return (
     <View style={overviewStyle.mealItem}>
       <Pressable
-        style={({ pressed }) => (pressed ? overviewStyle.pressed : null)}>
+        style={({ pressed }) => (pressed ? overviewStyle.pressed : null)}
+        onPress={() => navigate(id)}>
         <View>
           <Image
             source={{ uri: imageUrl }}
